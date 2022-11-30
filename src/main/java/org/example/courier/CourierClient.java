@@ -1,6 +1,7 @@
 package org.example.courier;
 
 
+import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 import org.example.Client;
 
@@ -10,6 +11,7 @@ public class CourierClient extends Client {
 
     public static final String ROOT = "/courier";
 
+    @Step("Создать курьера")
     public ValidatableResponse create(Courier courier) {
         return spec()
                 .body(courier)
@@ -18,6 +20,7 @@ public class CourierClient extends Client {
                 .then().log().all();
     }
 
+    @Step("Курьер успешно создан")
     public void assertCreatedSuccessfully(ValidatableResponse response) {
         response
                 .assertThat()
@@ -26,6 +29,7 @@ public class CourierClient extends Client {
                 .body("ok", is(true));
     }
 
+    @Step("Курьер не получился")
     public String assertCreationFailed(ValidatableResponse response, int expectedStatusCode) {
         return response
                 .assertThat()
@@ -36,6 +40,7 @@ public class CourierClient extends Client {
                 .path("message");
     }
 
+    @Step("Залогиниться")
     public ValidatableResponse logIn(Credentials creds) {
         return spec()
                 .body(creds)
@@ -44,6 +49,7 @@ public class CourierClient extends Client {
                 .then().log().all();
     }
 
+    @Step("Логин был успешным")
     public int assertLoggedInSuccessfully(ValidatableResponse loginResponse) {
         return loginResponse
                 .assertThat()
@@ -54,6 +60,7 @@ public class CourierClient extends Client {
                 .path("id");
     }
 
+    @Step("Удалить курьера")
     public void delete(int courierId) {
 
     }

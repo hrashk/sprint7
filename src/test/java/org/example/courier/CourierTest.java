@@ -1,5 +1,6 @@
 package org.example.courier;
 
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Test;
@@ -15,6 +16,7 @@ public class CourierTest {
             client.delete(courierId);
     }
 
+    @DisplayName("Успешное созддание курьера")
     @Test
     public void courier() {
         Courier courier = Courier.random();
@@ -26,6 +28,7 @@ public class CourierTest {
         courierId = client.assertLoggedInSuccessfully(loginResponse);
     }
 
+    @DisplayName("Курьера без пароля создать нельзя")
     @Test
     public void noPassword() {
         Courier courier = Courier.basic();
