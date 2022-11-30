@@ -1,43 +1,37 @@
 package org.example.courier;
 
+import io.restassured.response.ValidatableResponse;
+import org.junit.After;
 import org.junit.Test;
-
-import static io.restassured.RestAssured.given;
 
 public class CourierTest {
 
+    private final CourierClient client = new CourierClient();
+    private int courierId;
+
+    @After
+    public void deleteCourier() {
+        if (courierId > 0)
+            client.delete(courierId);
+    }
+
     @Test
     public void courier() {
-        String json = "{\"login\": \"Jack\", \"password\": \"P@ssw0rd123\", \"firstName\": \"Sparrow\"}";
-        boolean created = given().log().all()
-                .header("Content-Type", "application/json")
-                .baseUri("https://qa-scooter.praktikum-services.ru")
-                .body(json)
-                .when()
-                .post("/api/v1/courier")
-                .then().log().all()
-                .assertThat()
-                .statusCode(201)
-                .extract()
-                .path("ok")
-        ;
+        Courier courier = Courier.random();
+        ValidatableResponse response = client.create(courier);
+        client.assertCreatedSuccessfully(response);
 
-        String creds = "{\"login\": \"Jack\", \"password\": \"P@ssw0rd123\"}";
-        int id = given().log().all()
-                .header("Content-Type", "application/json")
-                .baseUri("https://qa-scooter.praktikum-services.ru")
-                .body(creds)
-                .when()
-                .post("/api/v1/courier/login")
-                .then().log().all()
-                .assertThat()
-                .statusCode(200)
-                .extract()
-                .path("id")
-                ;
+        Credentials creds = Credentials.from(courier);
+        ValidatableResponse loginResponse = client.logIn(creds);
+        courierId = client.assertLoggedInSuccessfully(loginResponse);
+    }
 
-
-        assert created;
-        assert id != 0;
+    @Test
+    public void noPassword() {
+        Courier courier = Courier.basic();
+        courier.setPassword(null);
+        ValidatableResponse response = client.create(courier);
+        var message = client.assertCreationFailed(response, 400);
+        System.out.println(message);
     }
 }
