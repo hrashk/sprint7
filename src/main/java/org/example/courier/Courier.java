@@ -1,7 +1,5 @@
 package org.example.courier;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
 public class Courier {
     private String login;
     private String password;
@@ -11,17 +9,6 @@ public class Courier {
         this.login = login;
         this.password = password;
         this.firstName = firstName;
-    }
-
-    public static Courier basic() {
-        return new Courier("Jack", "P@ssw0rd", "Sparrow");
-    }
-
-    public static Courier random() {
-        return new Courier(
-                RandomStringUtils.randomAlphanumeric(10),
-                RandomStringUtils.randomAlphanumeric(10),
-                RandomStringUtils.randomAlphanumeric(10));
     }
 
     public String getLogin() {
