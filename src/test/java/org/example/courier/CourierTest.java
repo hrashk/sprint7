@@ -1,43 +1,43 @@
 package org.example.courier;
 
+import io.restassured.response.ValidatableResponse;
+import org.junit.After;
 import org.junit.Test;
-
-import static io.restassured.RestAssured.given;
 
 public class CourierTest {
 
+    private final CourierGenerator generator = new CourierGenerator();
+    private final CourierClient client = new CourierClient();
+    private final CourierAssertions check = new CourierAssertions();
+
+    private int courierId;  // default value
+
+    @After public void deleteCourier() {
+        if (courierId > 0) {
+            ValidatableResponse response = client.delete(courierId);
+            check.deletedSuccessfully(response);
+        }
+    }
+
     @Test
     public void courier() {
-        String json = "{\"login\": \"Jack\", \"password\": \"P@ssw0rd123\", \"firstName\": \"Sparrow\"}";
-        boolean created = given().log().all()
-                .header("Content-Type", "application/json")
-                .baseUri("https://qa-scooter.praktikum-services.ru")
-                .body(json)
-                .when()
-                .post("/api/v1/courier")
-                .then().log().all()
-                .assertThat()
-                .statusCode(201)
-                .extract()
-                .path("ok")
-        ;
+        var courier = generator.random();
+        ValidatableResponse creationResponse = client.create(courier);
+        check.createdSuccessfully(creationResponse);
 
-        String creds = "{\"login\": \"Jack\", \"password\": \"P@ssw0rd123\"}";
-        int id = given().log().all()
-                .header("Content-Type", "application/json")
-                .baseUri("https://qa-scooter.praktikum-services.ru")
-                .body(creds)
-                .when()
-                .post("/api/v1/courier/login")
-                .then().log().all()
-                .assertThat()
-                .statusCode(200)
-                .extract()
-                .path("id")
-                ;
+        Credentials creds = Credentials.from(courier);
+        ValidatableResponse loginResponse = client.login(creds);
+        courierId = check.loggedInSuccessfully(loginResponse);
 
+        assert courierId > 100;
+    }
 
-        assert created;
-        assert id != 0;
+    @Test public void loginFails() {
+        var courier = generator.generic();
+        courier.setPassword(null);
+
+        ValidatableResponse loginResponse = client.create(courier);
+        String message = check.creationFailed(loginResponse);
+        assert !message.isBlank();
     }
 }
