@@ -2,19 +2,20 @@ package org.example.courier;
 
 import io.restassured.response.ValidatableResponse;
 
+import static java.net.HttpURLConnection.*;
 import static org.hamcrest.Matchers.*;
 
 public class CourierAssertions {
     public void createdSuccessfully(ValidatableResponse response) {
         response.assertThat()
-                .statusCode(201)
+                .statusCode(HTTP_CREATED)
                 .body("ok", is(true))
         ;
 
     }
     public int loggedInSuccessfully(ValidatableResponse response) {
         return response.assertThat()
-                .statusCode(200)
+                .statusCode(HTTP_OK)
                 .body("id", greaterThan(0))
                 .extract()
                 .path("id")
@@ -24,7 +25,7 @@ public class CourierAssertions {
 
     public String creationFailed(ValidatableResponse response) {
         return response.assertThat()
-                .statusCode(400)
+                .statusCode(HTTP_BAD_REQUEST)
                 .body("message", notNullValue())
                 .extract()
                 .path("message")
@@ -33,12 +34,12 @@ public class CourierAssertions {
 
     public void loginFailed(ValidatableResponse response) {
         response.assertThat()
-                .statusCode(409);
+                .statusCode(HTTP_CONFLICT);
     }
 
     public void deletedSuccessfully(ValidatableResponse response) {
         response.assertThat()
-                .statusCode(200)
+                .statusCode(HTTP_OK)
                 .body("ok", is(true))
                 ;
     }
