@@ -34,7 +34,8 @@ public class CourierAssertions {
 
     public void loginFailed(ValidatableResponse response) {
         response.assertThat()
-                .statusCode(HTTP_CONFLICT);
+                .statusCode(HTTP_BAD_REQUEST)
+                .body("message", notNullValue());
     }
 
     public void deletedSuccessfully(ValidatableResponse response) {

@@ -4,6 +4,8 @@ import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Test;
 
+import java.util.Map;
+
 public class CourierTest {
 
     private final CourierGenerator generator = new CourierGenerator();
@@ -32,12 +34,17 @@ public class CourierTest {
         assert courierId > 100;
     }
 
-    @Test public void loginFails() {
+    @Test public void creationFails() {
         var courier = generator.generic();
         courier.setPassword(null);
 
         ValidatableResponse loginResponse = client.create(courier);
         String message = check.creationFailed(loginResponse);
         assert !message.isBlank();
+    }
+
+    @Test public void loginFails() {
+        ValidatableResponse loginResponse = client.login(Map.of("password", "null"));
+        check.loginFailed(loginResponse);
     }
 }
