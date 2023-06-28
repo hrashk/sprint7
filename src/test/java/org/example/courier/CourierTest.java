@@ -1,43 +1,36 @@
 package org.example.courier;
 
+import io.restassured.response.ValidatableResponse;
+import org.junit.After;
 import org.junit.Test;
-
-import static io.restassured.RestAssured.given;
 
 public class CourierTest {
 
+    private final CourierGenerator generator = new CourierGenerator();
+    private final CourierClient client = new CourierClient();
+    private final CourierAssertions check = new CourierAssertions();
+    protected int courierId;
+
+    @After
+    public void deleteCourier() {
+        try {
+//            var response = client.deleteCourier(courierId);
+//            check.deleteSuccessfully(response);
+        } catch (Exception npe){
+
+        }
+    }
+
     @Test
-    public void courier() {
-        String json = "{\"login\": \"Jack\", \"password\": \"P@ssw0rd123\", \"firstName\": \"Sparrow\"}";
-        boolean created = given().log().all()
-                .header("Content-Type", "application/json")
-                .baseUri("https://qa-scooter.praktikum-services.ru")
-                .body(json)
-                .when()
-                .post("/api/v1/courier")
-                .then().log().all()
-                .assertThat()
-                .statusCode(201)
-                .extract()
-                .path("ok")
-        ;
+    public void createCourierAndLogInSuccesfully() {
+//        Map<String, String> json = Map.of("login", "Jack", "password", "P@ssw0rd123", "firstName", "Sparrow");
+        var courier = generator.random();
+        ValidatableResponse courierResponse = client.createCourier(courier);
+        check.createdSuccessfully(courierResponse);
 
-        String creds = "{\"login\": \"Jack\", \"password\": \"P@ssw0rd123\"}";
-        int id = given().log().all()
-                .header("Content-Type", "application/json")
-                .baseUri("https://qa-scooter.praktikum-services.ru")
-                .body(creds)
-                .when()
-                .post("/api/v1/courier/login")
-                .then().log().all()
-                .assertThat()
-                .statusCode(200)
-                .extract()
-                .path("id")
-                ;
-
-
-        assert created;
-        assert id != 0;
+        Credentials creds = Credentials.from(courier);
+        ValidatableResponse loginResponse = client.logIn(creds);
+        courierId = check.loggedInSuccessfully(loginResponse);
+        assert courierId > 100;
     }
 }
