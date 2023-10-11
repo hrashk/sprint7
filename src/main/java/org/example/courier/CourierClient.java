@@ -7,6 +7,10 @@ import java.util.Map;
 public class CourierClient extends org.example.Client {
     static final String COURIER_PATH = "/courier";
 
+    public CourierClient(String baseUri) {
+        super(baseUri);
+    }
+
     public ValidatableResponse create(Courier courier) {
         return spec()
                 .body(courier)

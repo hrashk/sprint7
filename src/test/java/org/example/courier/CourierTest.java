@@ -1,14 +1,25 @@
 package org.example.courier;
 
 import io.restassured.response.ValidatableResponse;
+import org.aeonbits.owner.ConfigFactory;
+import org.example.AppConfig;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public class CourierTest {
 
-    private final CourierClient client = new CourierClient();
+    private AppConfig appConfig;
+
+    private CourierClient client;
     private final CourierAssertions check = new CourierAssertions();
     protected int courierId;
+
+    @Before
+    public void loadConfig() {
+        appConfig = ConfigFactory.create(AppConfig.class);
+        client = new CourierClient(appConfig.baseUrl());
+    }
 
     @After
     public void deleteCourier() {

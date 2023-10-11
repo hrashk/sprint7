@@ -7,7 +7,11 @@ import static io.restassured.RestAssured.given;
 
 public class Client {
     private static final String BASE_PATH = "/api/v1";
-    static final String BASE_URI = "https://qa-scooter.praktikum-services.ru";
+    private final String BASE_URI;
+
+    public Client(String baseUri) {
+        BASE_URI = baseUri;
+    }
 
     public RequestSpecification spec() {
         return given().log().all()
