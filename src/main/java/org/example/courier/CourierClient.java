@@ -16,7 +16,7 @@ public class CourierClient extends org.example.Client {
                 .body(courier)
                 .when()
                 .post(COURIER_PATH)
-                .then().log().all();
+                .then();
     }
 
     public ValidatableResponse login(Credentials creds) {
@@ -24,7 +24,7 @@ public class CourierClient extends org.example.Client {
                 .body(creds)
                 .when()
                 .post(COURIER_PATH + "/login")
-                .then().log().all();
+                .then();
     }
 
     public ValidatableResponse delete(int courierId) {
@@ -32,6 +32,6 @@ public class CourierClient extends org.example.Client {
                 .body(Map.of("id", String.valueOf(courierId)))
                 .when()
                 .delete(COURIER_PATH + "/" + courierId)
-                .then().log().all();
+                .then();
     }
 }

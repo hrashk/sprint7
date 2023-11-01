@@ -1,5 +1,7 @@
 package org.example;
 
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 
@@ -14,7 +16,8 @@ public class Client {
     }
 
     public RequestSpecification spec() {
-        return given().log().all()
+        return given()
+                .filters(new RequestLoggingFilter(), new ResponseLoggingFilter())
                 .contentType(ContentType.JSON)
                 .baseUri(BASE_URI)
                 .basePath(BASE_PATH)
