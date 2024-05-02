@@ -1,5 +1,6 @@
 package org.example.courier;
 
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Test;
@@ -20,6 +21,7 @@ public class CourierTest {
         }
     }
 
+    @DisplayName("courier happy path")
     @Test
     public void courier() {
         var courier = Courier.random();

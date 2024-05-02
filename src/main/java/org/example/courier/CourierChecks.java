@@ -1,5 +1,6 @@
 package org.example.courier;
 
+import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 
 import java.net.HttpURLConnection;
@@ -17,6 +18,7 @@ public class CourierChecks {
         return id;
     }
 
+    @Step("check courier created successfully")
     public void createdSuccessfully(ValidatableResponse createResponse) {
         boolean created = createResponse
                 .assertThat()
