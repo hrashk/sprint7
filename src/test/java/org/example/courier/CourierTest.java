@@ -1,45 +1,27 @@
 package org.example.courier;
 
+import io.restassured.response.ValidatableResponse;
 import org.junit.Test;
 
-import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
 
 public class CourierTest {
 
+    private final CourierClient client = new CourierClient();
+    private final CourierChecks check = new CourierChecks();
+
     @Test
     public void courier() {
-        String json = "{\"login\": \"Jack\", \"password\": \"P@ssw0rd123\", \"firstName\": \"Sparrow\"}";
-        boolean created = given().log().all()
-                .header("Content-Type", "application/json")
-                .baseUri("https://qa-scooter.praktikum-services.ru")
-                .body(json)
-                .when()
-                .post("/api/v1/courier")
-                .then().log().all()
-                .assertThat()
-                .statusCode(201)
-                .extract()
-                .path("ok")
-        ;
+        var courier = Courier.random();
+        ValidatableResponse createResponse = client.createCourier(courier);
+        check.createdSuccessfully(createResponse);
 
-        String creds = "{\"login\": \"Jack\", \"password\": \"P@ssw0rd123\"}";
-        int id = given().log().all()
-                .header("Content-Type", "application/json")
-                .baseUri("https://qa-scooter.praktikum-services.ru")
-                .body(creds)
-                .when()
-                .post("/api/v1/courier/login")
-                .then().log().all()
-                .assertThat()
-                .statusCode(200)
-                .extract()
-                .path("id")
-                ;
+        var creds = CourierCredentials.from(courier);
+        ValidatableResponse loginResponse = client.loginCourier(creds);
+        int id = check.loggedInSuccessfully(loginResponse);
 
-
-        assertTrue(created);
         assertNotEquals(0, id);
+
+        client.deleteCourier(id);
     }
 }
