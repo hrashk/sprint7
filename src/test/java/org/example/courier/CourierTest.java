@@ -1,6 +1,7 @@
 package org.example.courier;
 
 import io.restassured.response.ValidatableResponse;
+import org.junit.After;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotEquals;
@@ -9,6 +10,15 @@ public class CourierTest {
 
     private final CourierClient client = new CourierClient();
     private final CourierChecks check = new CourierChecks();
+    int courierId;
+
+    @After
+    public void deleteCourier() {
+        if (courierId != 0) {
+            ValidatableResponse response = client.deleteCourier(courierId);
+            check.deletedSuccesfully(response);
+        }
+    }
 
     @Test
     public void courier() {
@@ -18,10 +28,8 @@ public class CourierTest {
 
         var creds = CourierCredentials.from(courier);
         ValidatableResponse loginResponse = client.loginCourier(creds);
-        int id = check.loggedInSuccessfully(loginResponse);
+        courierId = check.loggedInSuccessfully(loginResponse);
 
-        assertNotEquals(0, id);
-
-        client.deleteCourier(id);
+        assertNotEquals(0, courierId);
     }
 }

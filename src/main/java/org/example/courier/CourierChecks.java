@@ -26,4 +26,8 @@ public class CourierChecks {
         ;
         assertTrue(created);
     }
+
+    public void deletedSuccesfully(ValidatableResponse response) {
+
+    }
 }
