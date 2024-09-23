@@ -1,5 +1,6 @@
 package praktikum.courier;
 
+import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 
 import static java.net.HttpURLConnection.HTTP_CREATED;
@@ -8,6 +9,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 public class CourierChecks {
+    @Step("создался успешно")
     public void checkCreated(ValidatableResponse response) {
         boolean created = response
                 .assertThat()
@@ -18,6 +20,7 @@ public class CourierChecks {
         assertTrue(created);
     }
 
+    @Step("залогинился")
     public int checkLoggedIn(ValidatableResponse loginResponse) {
         int id = loginResponse
                 .assertThat()
