@@ -1,20 +1,14 @@
 package praktikum.courier;
 
-import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 
 import java.util.Map;
 
-import static io.restassured.RestAssured.given;
-
-public class CourierClient {
-    private static final String BASE_URI = "https://qa-scooter.praktikum-services.ru";
-    private static final String COURIER_PATH = "/api/v1/courier";
+public class CourierClient extends praktikum.Client {
+    private static final String COURIER_PATH = "courier";
 
     public ValidatableResponse logIn(CourierCredentials creds) {
-        return given().log().all()
-                .contentType(ContentType.JSON)
-                .baseUri(BASE_URI)
+        return spec()
                 .body(creds)
                 .when()
                 .post(COURIER_PATH + "/login")
@@ -22,9 +16,7 @@ public class CourierClient {
     }
 
     public ValidatableResponse createCourier(Courier courier) {
-        return given().log().all()
-                .contentType(ContentType.JSON)
-                .baseUri(BASE_URI)
+        return spec()
                 .body(courier)
                 .when()
                 .post(COURIER_PATH)
@@ -32,9 +24,7 @@ public class CourierClient {
     }
 
     public ValidatableResponse delete(int id) {
-        return given().log().all()
-                .contentType(ContentType.JSON)
-                .baseUri(BASE_URI)
+        return spec()
                 .body(Map.of("id", id))
                 .when()
                 .delete(COURIER_PATH + "/" + id)
