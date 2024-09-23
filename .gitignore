@@ -1,7 +1,4 @@
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+target
 .allure
 
 ### IntelliJ IDEA ###
@@ -9,6 +6,7 @@ target/
 *.iws
 *.iml
 *.ipr
+*.http
 
 ### Eclipse ###
 .apt_generated
