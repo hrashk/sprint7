@@ -3,6 +3,8 @@ package praktikum.courier;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 
+import java.util.Map;
+
 import static io.restassured.RestAssured.given;
 
 public class CourierClient {
@@ -26,6 +28,16 @@ public class CourierClient {
                 .body(courier)
                 .when()
                 .post(COURIER_PATH)
+                .then().log().all();
+    }
+
+    public ValidatableResponse delete(int id) {
+        return given().log().all()
+                .contentType(ContentType.JSON)
+                .baseUri(BASE_URI)
+                .body(Map.of("id", id))
+                .when()
+                .delete(COURIER_PATH + "/" + id)
                 .then().log().all();
     }
 }

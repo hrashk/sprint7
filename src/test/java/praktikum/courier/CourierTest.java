@@ -1,11 +1,22 @@
 package praktikum.courier;
 
 import io.restassured.response.ValidatableResponse;
+import org.junit.After;
 import org.junit.Test;
 
 public class CourierTest {
     private CourierClient client = new CourierClient();
     private CourierChecks check = new CourierChecks();
+
+    int courierId;
+
+    @After
+    public void deleteCourier() {
+        if (courierId != 0) {
+            ValidatableResponse response = client.delete(courierId);
+            check.deleted(response);
+        }
+    }
 
     @Test
     public void courier() {
@@ -15,6 +26,6 @@ public class CourierTest {
 
         var creds = CourierCredentials.fromCourier(courier);
         ValidatableResponse loginResponse = client.logIn(creds);
-        int id = check.checkLoggedIn(loginResponse);
+        courierId = check.checkLoggedIn(loginResponse);
     }
 }

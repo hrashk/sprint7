@@ -31,4 +31,8 @@ public class CourierChecks {
 
         return id;
     }
+
+    public void deleted(ValidatableResponse response) {
+
+    }
 }
