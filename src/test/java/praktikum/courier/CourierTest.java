@@ -30,4 +30,12 @@ public class CourierTest {
         ValidatableResponse loginResponse = client.logIn(creds);
         courierId = check.checkLoggedIn(loginResponse);
     }
+
+    @Test
+    @DisplayName("поломанный курьер")
+    public void cannotCreateWithoutPassword() {
+        var courier = Courier.withoutPassword();
+        ValidatableResponse createResponse = client.createCourier(courier);
+        check.checkFailed(createResponse);
+    }
 }

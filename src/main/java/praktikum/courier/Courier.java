@@ -18,6 +18,11 @@ public class Courier {
                 "P@ssw0rd123", "Sparrow");
     }
 
+    static Courier withoutPassword() {
+        return new Courier("Jack" + RandomStringUtils.randomAlphanumeric(5, 15),
+                null, "Sparrow");
+    }
+
     public String getLogin() {
         return login;
     }
