@@ -3,6 +3,7 @@ package praktikum.courier;
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 
+import java.io.File;
 import java.util.Map;
 
 public class CourierClient extends praktikum.Client {
@@ -30,6 +31,14 @@ public class CourierClient extends praktikum.Client {
                 .body(Map.of("id", id))
                 .when()
                 .delete(COURIER_PATH + "/" + id)
+                .then().log().all();
+    }
+
+    public ValidatableResponse createCourier(File json) {
+        return spec()
+                .body(json)
+                .when()
+                .post(COURIER_PATH)
                 .then().log().all();
     }
 }
