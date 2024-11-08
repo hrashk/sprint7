@@ -3,13 +3,18 @@ package praktikum.courier;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
+import org.junit.ClassRule;
 import org.junit.Test;
+import praktikum.ConfigRule;
 
 import java.io.File;
 
 public class CourierTest {
     private CourierClient client = new CourierClient();
     private CourierChecks check = new CourierChecks();
+
+    @ClassRule
+    public static final ConfigRule cfg = new ConfigRule();
 
     int courierId;
 
