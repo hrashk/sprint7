@@ -11,6 +11,10 @@
 * configuration properties
 * spring-context, Owner, etc
 
+* running API tests in docker
+* docker build -t sprint7-tests .
+* docker run sprint7-tests
+
 * Awaitility
 * WireMock
 * Citrus
