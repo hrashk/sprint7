@@ -1,5 +1,6 @@
 package praktikum.courier;
 
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Test;
@@ -12,6 +13,7 @@ public class CourierTest {
     private int courierId;
 
     @Test
+    @DisplayName("удачливый курьер")
     public void courier() {
         var courier = Courier.random();
         ValidatableResponse createResponse = client.createCourier(courier);

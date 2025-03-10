@@ -1,5 +1,6 @@
 package praktikum.courier;
 
+import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 
 import java.net.HttpURLConnection;
@@ -7,6 +8,7 @@ import java.net.HttpURLConnection;
 import static org.junit.Assert.assertTrue;
 
 public class CourierChecks {
+    @Step("успешный логин")
     public int loginSuccess(ValidatableResponse loginResponse) {
         int id = loginResponse
                 .assertThat()
