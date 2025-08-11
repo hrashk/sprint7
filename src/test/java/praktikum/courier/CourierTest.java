@@ -26,12 +26,12 @@ public class CourierTest {
         var courier = Courier.random();
 
         ValidatableResponse createResponse = client.createCourier(courier);
-        check.created(createResponse);
+        check.assertCreated(createResponse);
 
         var creds = Credentials.from(courier);
 
         ValidatableResponse loginResponse = client.logIn(creds);
-        courierId = check.loggedIn(loginResponse);
+        courierId = check.assertLoggedIn(loginResponse);
 
         assertNotEquals(0, courierId);
     }
