@@ -1,8 +1,10 @@
-package org.example.courier;
+package praktikum;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CourierTest {
 
@@ -37,7 +39,7 @@ public class CourierTest {
                 ;
 
 
-        assert created;
-        assert id != 0;
+        assertTrue(created);
+        assertNotEquals(0, id);
     }
 }
