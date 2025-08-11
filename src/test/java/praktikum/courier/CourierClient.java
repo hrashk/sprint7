@@ -1,12 +1,13 @@
 package praktikum.courier;
 
+import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 import praktikum.Client;
 
 import java.util.Map;
 
 public class CourierClient extends Client {
-
+    @Step("логин")
     public ValidatableResponse logIn(Credentials creds) {
         return spec()
                 .body(creds)
@@ -15,6 +16,7 @@ public class CourierClient extends Client {
                 .then().log().all();
     }
 
+    @Step("создать курьера")
     public ValidatableResponse createCourier(Courier courier) {
         return spec()
                 .body(courier)
@@ -23,6 +25,7 @@ public class CourierClient extends Client {
                 .then().log().all();
     }
 
+    @Step("удалить курьера")
     public ValidatableResponse delete(int id) {
         return spec()
                 .body(Map.of("id", id))

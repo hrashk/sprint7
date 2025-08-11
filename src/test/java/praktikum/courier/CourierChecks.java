@@ -1,5 +1,6 @@
 package praktikum.courier;
 
+import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 
 import java.net.HttpURLConnection;
@@ -15,6 +16,7 @@ public class CourierChecks {
                 .path("id");
     }
 
+    @Step("курьер создался без ошибок")
     public void created(ValidatableResponse createResponse) {
         boolean created = createResponse
                 .assertThat()

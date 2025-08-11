@@ -2,6 +2,7 @@ package praktikum.courier;
 
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -20,6 +21,7 @@ public class CourierTest {
     }
 
     @Test
+    @DisplayName("удачливый курьер")
     public void courier() {
         var courier = Courier.random();
 
