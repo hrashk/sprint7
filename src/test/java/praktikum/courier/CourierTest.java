@@ -1,53 +1,36 @@
 package praktikum.courier;
 
-import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-import java.net.HttpURLConnection;
-
-import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class CourierTest {
+    final CourierClient client = new CourierClient();
+    final CourierChecks check = new CourierChecks();
+
+    int courierId;
+
+    @AfterEach
+    public void deleteCourier() {
+        if (courierId > 0) {
+            client.delete(courierId);
+        }
+    }
 
     @Test
     public void courier() {
         var courier = Courier.random();
 
-        boolean created = createCourier(courier)
-                .assertThat()
-                .statusCode(HttpURLConnection.HTTP_CREATED)
-                .extract()
-                .path("ok")
-        ;
+        ValidatableResponse createResponse = client.createCourier(courier);
+        check.created(createResponse);
 
         var creds = Credentials.from(courier);
 
-        int id = given().log().all()
-                .contentType(ContentType.JSON)
-                .baseUri("https://qa-scooter.praktikum-services.ru")
-                .body(creds)
-                .when()
-                .post("/api/v1/courier/login")
-                .then().log().all()
-                .assertThat()
-                .statusCode(HttpURLConnection.HTTP_OK)
-                .extract()
-                .path("id")
-                ;
+        ValidatableResponse loginResponse = client.logIn(creds);
+        courierId = check.loggedIn(loginResponse);
 
-
-        assert created;
-        assert id != 0;
-    }
-
-    private static ValidatableResponse createCourier(Courier courier) {
-        return given().log().all()
-                .contentType(ContentType.JSON)
-                .baseUri("https://qa-scooter.praktikum-services.ru")
-                .body(courier)
-                .when()
-                .post("/api/v1/courier")
-                .then().log().all();
+        assertNotEquals(0, courierId);
     }
 }
