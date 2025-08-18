@@ -12,7 +12,7 @@ public class Client {
     public RequestSpecification spec() {
         return given().log().all()
                 .contentType(ContentType.JSON)
-                .baseUri(EnvConfig.BASE_URL)
+                .baseUri(EnvConfig.BASE_URI)
                 .basePath(BASE_PATH);
     }
 }
