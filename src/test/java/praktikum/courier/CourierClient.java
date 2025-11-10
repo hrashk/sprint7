@@ -1,5 +1,6 @@
 package praktikum.courier;
 
+import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 import praktikum.Client;
 
@@ -9,6 +10,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CourierClient extends Client {
+    @Step("курьер залогинился")
     public Integer checkLoggedIn(ValidatableResponse loginResponse) {
         return loginResponse
                 .assertThat()
@@ -17,6 +19,7 @@ public class CourierClient extends Client {
                 .path("id");
     }
 
+    @Step("курьер создался")
     public void checkCreated(ValidatableResponse createResponse) {
         boolean created = createResponse
                 .assertThat()
@@ -26,6 +29,7 @@ public class CourierClient extends Client {
         assertTrue(created);
     }
 
+    @Step("залогиниться")
     public ValidatableResponse logIn(Creds creds) {
         return spec()
                 .body(creds)
@@ -34,6 +38,7 @@ public class CourierClient extends Client {
                 .then().log().all();
     }
 
+    @Step("создать курьера")
     public ValidatableResponse create(Courier courier) {
         return spec()
                 .body(courier)
@@ -42,6 +47,7 @@ public class CourierClient extends Client {
                 .then().log().all();
     }
 
+    @Step("удалить курьера")
     public ValidatableResponse delete(int courierId) {
         return spec()
                 .body(Map.of("id", courierId))
