@@ -1,45 +1,36 @@
 package praktikum;
 
+import io.restassured.response.ValidatableResponse;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import praktikum.courier.Courier;
+import praktikum.courier.CourierClient;
+import praktikum.courier.Creds;
 
-import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CourierTest {
+    CourierClient client = new CourierClient();
+    int courierId;
+
+    @AfterEach
+    public void dropCourier() {
+        if (courierId > 0) {
+            client.delete(courierId);
+            // todo client.checkDeleted(deleteResponse)
+        }
+    }
 
     @Test
     public void courier() {
-        String json = "{\"login\": \"Jack\", \"password\": \"P@ssw0rd123\", \"firstName\": \"Sparrow\"}";
-        boolean created = given().log().all()
-                .header("Content-Type", "application/json")
-                .baseUri("https://qa-scooter.praktikum-services.ru")
-                .body(json)
-                .when()
-                .post("/api/v1/courier")
-                .then().log().all()
-                .assertThat()
-                .statusCode(201)
-                .extract()
-                .path("ok")
-        ;
+        var courier = Courier.random();
+        ValidatableResponse createResponse = client.create(courier);
+        client.checkCreated(createResponse);
 
-        String creds = "{\"login\": \"Jack\", \"password\": \"P@ssw0rd123\"}";
-        int id = given().log().all()
-                .header("Content-Type", "application/json")
-                .baseUri("https://qa-scooter.praktikum-services.ru")
-                .body(creds)
-                .when()
-                .post("/api/v1/courier/login")
-                .then().log().all()
-                .assertThat()
-                .statusCode(200)
-                .extract()
-                .path("id")
-                ;
+        var creds = Creds.fromCourier(courier);
+        ValidatableResponse loginResponse = client.logIn(creds);
+        courierId = client.checkLoggedIn(loginResponse);
 
-
-        assertTrue(created);
-        assertNotEquals(0, id);
+        assertNotEquals(0, courierId);
     }
 }
