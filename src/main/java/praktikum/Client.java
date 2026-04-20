@@ -11,7 +11,7 @@ public class Client {
     public RequestSpecification spec() {
         return given().log().all()
                 .contentType(ContentType.JSON)
-                .baseUri(EnvConfig.BASE_URI)
+                .baseUri(EnvConfig.BASE_URL)
                 .basePath(BASE_PATH)
 
                 ;
