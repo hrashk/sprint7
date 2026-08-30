@@ -6,6 +6,8 @@ import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+// todo  .filter(new AllureRestAssured())
+
 public class CourierTest {
 
     @Test
