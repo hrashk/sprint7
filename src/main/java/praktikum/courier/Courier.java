@@ -1,5 +1,7 @@
 package praktikum.courier;
 
+import io.qameta.allure.Step;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Courier {
@@ -13,6 +15,7 @@ public class Courier {
         this.firstName = firstName;
     }
 
+    @Step("Рандомный курьер")
     public static Courier random() {
         var rnd = ThreadLocalRandom.current();
         String login = "Jack-" + rnd.nextLong();
@@ -30,5 +33,14 @@ public class Courier {
 
     public String getFirstName() {
         return firstName;
+    }
+
+    @Override
+    public String toString() {
+        return "Courier{" +
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                '}';
     }
 }
