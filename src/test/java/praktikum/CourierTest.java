@@ -2,6 +2,7 @@ package praktikum;
 
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import praktikum.courier.Courier;
 import praktikum.courier.CourierClient;
@@ -19,6 +20,7 @@ public class CourierTest {
     }
 
     @Test
+    @DisplayName("Создание курьера")
     public void courier() {
         var courier = Courier.random();
         ValidatableResponse createResponse = client.createCourier(courier);
