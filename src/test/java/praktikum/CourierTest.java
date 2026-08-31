@@ -7,8 +7,6 @@ import praktikum.courier.Courier;
 import praktikum.courier.CourierClient;
 import praktikum.courier.Credentials;
 
-// todo  .filter(new AllureRestAssured())
-
 public class CourierTest {
     private CourierClient client = new CourierClient();
     private int courierId;
